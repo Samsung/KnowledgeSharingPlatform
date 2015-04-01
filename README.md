@@ -4,6 +4,9 @@ The Knowledge Sharing Platform, called K#, aims to develop a sophisticated enter
 
 Currently, the base knowledge has approximately 4.5 billion entities and 20 billion facts for general-purpose and domain-specific knowledge. Some domain knowledge are already interlinked into the base knowledge, including 1.2 million entities for products and specifications, 24 million entities for entertainment contents, 5 million entities for restaurants and dining, 46 million entities for multimedia contents, and 24 million geo-spatial entities.   
 
+* Overview of Knowledge Sharing Platform (http://ksharp.net/overview/index.html?theme=beige#/1)
+![platform](http://ksharp.net/overview/images/platform.png)
+
 1) Extensible Knowledge Graph: K# Knowledge Graph is a knowledge base to enhance intelligent services with semantic information gathered from a wide variety of sources. It starts to provide various facts across heterogeneous subjects, and more domain-specific and commonsense knowledge will be covered in near future.
 
 2) Semantic Search and Reasoning: K# is to realise more of a knowledge engine rather than a traditional information engine model. K# is able to understand the meaning of a given word and how it relates to other objects using semantic knowledge model and reasoning capabilities. See semantic summarisation based on semantic properties for details.

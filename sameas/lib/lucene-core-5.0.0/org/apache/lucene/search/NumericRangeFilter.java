@@ -1,0 +1,208 @@
+package org.apache.lucene.search;
+
+/*
+ *
+ * Copyright(c) 2015, Samsung Electronics Co., Ltd.
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the name of the <organization> nor the
+      names of its contributors may be used to endorse or promote products
+      derived from this software without specific prior written permission.
+    
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */ 
+
+import org.apache.lucene.analysis.NumericTokenStream; // for javadocs
+import org.apache.lucene.document.DoubleField; // for javadocs
+import org.apache.lucene.document.FloatField; // for javadocs
+import org.apache.lucene.document.IntField; // for javadocs
+import org.apache.lucene.document.LongField; // for javadocs
+import org.apache.lucene.util.NumericUtils; // for javadocs
+
+/**
+ * A {@link Filter} that only accepts numeric values within
+ * a specified range. To use this, you must first index the
+ * numeric values using {@link IntField}, {@link
+ * FloatField}, {@link LongField} or {@link DoubleField} (expert: {@link
+ * NumericTokenStream}).
+ *
+ * <p>You create a new NumericRangeFilter with the static
+ * factory methods, eg:
+ *
+ * <pre class="prettyprint">
+ * Filter f = NumericRangeFilter.newFloatRange("weight", 0.03f, 0.10f, true, true);
+ * </pre>
+ *
+ * accepts all documents whose float valued "weight" field
+ * ranges from 0.03 to 0.10, inclusive.
+ * See {@link NumericRangeQuery} for details on how Lucene
+ * indexes and searches numeric valued fields.
+ *
+ * @since 2.9
+ **/
+public final class NumericRangeFilter<T extends Number> extends MultiTermQueryWrapperFilter<NumericRangeQuery<T>> {
+
+  private NumericRangeFilter(final NumericRangeQuery<T> query) {
+    super(query);
+  }
+  
+  /**
+   * Factory that creates a <code>NumericRangeFilter</code>, that filters a <code>long</code>
+   * range using the given <a href="NumericRangeQuery.html#precisionStepDesc"><code>precisionStep</code></a>.
+   * You can have half-open ranges (which are in fact &lt;/&le; or &gt;/&ge; queries)
+   * by setting the min or max value to <code>null</code>. By setting inclusive to false, it will
+   * match all documents excluding the bounds, with inclusive on, the boundaries are hits, too.
+   */
+  public static NumericRangeFilter<Long> newLongRange(final String field, final int precisionStep,
+    Long min, Long max, final boolean minInclusive, final boolean maxInclusive
+  ) {
+    return new NumericRangeFilter<>(
+      NumericRangeQuery.newLongRange(field, precisionStep, min, max, minInclusive, maxInclusive)
+    );
+  }
+  
+  /**
+   * Factory that creates a <code>NumericRangeFilter</code>, that queries a <code>long</code>
+   * range using the default <code>precisionStep</code> {@link NumericUtils#PRECISION_STEP_DEFAULT} (16).
+   * You can have half-open ranges (which are in fact &lt;/&le; or &gt;/&ge; queries)
+   * by setting the min or max value to <code>null</code>. By setting inclusive to false, it will
+   * match all documents excluding the bounds, with inclusive on, the boundaries are hits, too.
+   */
+  public static NumericRangeFilter<Long> newLongRange(final String field,
+    Long min, Long max, final boolean minInclusive, final boolean maxInclusive
+  ) {
+    return new NumericRangeFilter<>(
+      NumericRangeQuery.newLongRange(field, min, max, minInclusive, maxInclusive)
+    );
+  }
+  
+  /**
+   * Factory that creates a <code>NumericRangeFilter</code>, that filters a <code>int</code>
+   * range using the given <a href="NumericRangeQuery.html#precisionStepDesc"><code>precisionStep</code></a>.
+   * You can have half-open ranges (which are in fact &lt;/&le; or &gt;/&ge; queries)
+   * by setting the min or max value to <code>null</code>. By setting inclusive to false, it will
+   * match all documents excluding the bounds, with inclusive on, the boundaries are hits, too.
+   */
+  public static NumericRangeFilter<Integer> newIntRange(final String field, final int precisionStep,
+    Integer min, Integer max, final boolean minInclusive, final boolean maxInclusive
+  ) {
+    return new NumericRangeFilter<>(
+      NumericRangeQuery.newIntRange(field, precisionStep, min, max, minInclusive, maxInclusive)
+    );
+  }
+  
+  /**
+   * Factory that creates a <code>NumericRangeFilter</code>, that queries a <code>int</code>
+   * range using the default <code>precisionStep</code> {@link NumericUtils#PRECISION_STEP_DEFAULT_32} (8).
+   * You can have half-open ranges (which are in fact &lt;/&le; or &gt;/&ge; queries)
+   * by setting the min or max value to <code>null</code>. By setting inclusive to false, it will
+   * match all documents excluding the bounds, with inclusive on, the boundaries are hits, too.
+   */
+  public static NumericRangeFilter<Integer> newIntRange(final String field,
+    Integer min, Integer max, final boolean minInclusive, final boolean maxInclusive
+  ) {
+    return new NumericRangeFilter<>(
+      NumericRangeQuery.newIntRange(field, min, max, minInclusive, maxInclusive)
+    );
+  }
+  
+  /**
+   * Factory that creates a <code>NumericRangeFilter</code>, that filters a <code>double</code>
+   * range using the given <a href="NumericRangeQuery.html#precisionStepDesc"><code>precisionStep</code></a>.
+   * You can have half-open ranges (which are in fact &lt;/&le; or &gt;/&ge; queries)
+   * by setting the min or max value to <code>null</code>.
+   * {@link Double#NaN} will never match a half-open range, to hit {@code NaN} use a query
+   * with {@code min == max == Double.NaN}. By setting inclusive to false, it will
+   * match all documents excluding the bounds, with inclusive on, the boundaries are hits, too.
+   */
+  public static NumericRangeFilter<Double> newDoubleRange(final String field, final int precisionStep,
+    Double min, Double max, final boolean minInclusive, final boolean maxInclusive
+  ) {
+    return new NumericRangeFilter<>(
+      NumericRangeQuery.newDoubleRange(field, precisionStep, min, max, minInclusive, maxInclusive)
+    );
+  }
+  
+  /**
+   * Factory that creates a <code>NumericRangeFilter</code>, that queries a <code>double</code>
+   * range using the default <code>precisionStep</code> {@link NumericUtils#PRECISION_STEP_DEFAULT} (16).
+   * You can have half-open ranges (which are in fact &lt;/&le; or &gt;/&ge; queries)
+   * by setting the min or max value to <code>null</code>.
+   * {@link Double#NaN} will never match a half-open range, to hit {@code NaN} use a query
+   * with {@code min == max == Double.NaN}. By setting inclusive to false, it will
+   * match all documents excluding the bounds, with inclusive on, the boundaries are hits, too.
+   */
+  public static NumericRangeFilter<Double> newDoubleRange(final String field,
+    Double min, Double max, final boolean minInclusive, final boolean maxInclusive
+  ) {
+    return new NumericRangeFilter<>(
+      NumericRangeQuery.newDoubleRange(field, min, max, minInclusive, maxInclusive)
+    );
+  }
+  
+  /**
+   * Factory that creates a <code>NumericRangeFilter</code>, that filters a <code>float</code>
+   * range using the given <a href="NumericRangeQuery.html#precisionStepDesc"><code>precisionStep</code></a>.
+   * You can have half-open ranges (which are in fact &lt;/&le; or &gt;/&ge; queries)
+   * by setting the min or max value to <code>null</code>.
+   * {@link Float#NaN} will never match a half-open range, to hit {@code NaN} use a query
+   * with {@code min == max == Float.NaN}. By setting inclusive to false, it will
+   * match all documents excluding the bounds, with inclusive on, the boundaries are hits, too.
+   */
+  public static NumericRangeFilter<Float> newFloatRange(final String field, final int precisionStep,
+    Float min, Float max, final boolean minInclusive, final boolean maxInclusive
+  ) {
+    return new NumericRangeFilter<>(
+      NumericRangeQuery.newFloatRange(field, precisionStep, min, max, minInclusive, maxInclusive)
+    );
+  }
+
+  /**
+   * Factory that creates a <code>NumericRangeFilter</code>, that queries a <code>float</code>
+   * range using the default <code>precisionStep</code> {@link NumericUtils#PRECISION_STEP_DEFAULT_32} (8).
+   * You can have half-open ranges (which are in fact &lt;/&le; or &gt;/&ge; queries)
+   * by setting the min or max value to <code>null</code>.
+   * {@link Float#NaN} will never match a half-open range, to hit {@code NaN} use a query
+   * with {@code min == max == Float.NaN}. By setting inclusive to false, it will
+   * match all documents excluding the bounds, with inclusive on, the boundaries are hits, too.
+   */
+  public static NumericRangeFilter<Float> newFloatRange(final String field,
+    Float min, Float max, final boolean minInclusive, final boolean maxInclusive
+  ) {
+    return new NumericRangeFilter<>(
+      NumericRangeQuery.newFloatRange(field, min, max, minInclusive, maxInclusive)
+    );
+  }
+
+  /** Returns <code>true</code> if the lower endpoint is inclusive */
+  public boolean includesMin() { return query.includesMin(); }
+  
+  /** Returns <code>true</code> if the upper endpoint is inclusive */
+  public boolean includesMax() { return query.includesMax(); }
+
+  /** Returns the lower value of this range filter */
+  public T getMin() { return query.getMin(); }
+
+  /** Returns the upper value of this range filter */
+  public T getMax() { return query.getMax(); }
+  
+  /** Returns the precision step. */
+  public int getPrecisionStep() { return query.getPrecisionStep(); }
+  
+}

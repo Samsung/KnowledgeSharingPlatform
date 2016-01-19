@@ -83,10 +83,10 @@ public abstract class SnowballProgram {
      * @param text character array containing input
      * @param length valid length of text.
      */
-    public void setCurrent(char text[], int textLength) {
+    public void setCurrent(char text[], int length) {
       current = text;
       cursor = 0;
-      limit = textLength;
+      limit = length;
       limit_backward = 0;
       bra = cursor;
       ket = limit;

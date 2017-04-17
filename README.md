@@ -1,4 +1,4 @@
-##Knowledge Sharing Platform
+## Knowledge Sharing Platform
 
 The Knowledge Sharing Platform (K#) is a platform that aims to develop a sophisticated enterprise knowledge graph using a wide variety of large-scale data sources. To realise this platform, we are developing a set of components for collecting, extracting, transforming, integrating, and updating knowledge sources. 
 
